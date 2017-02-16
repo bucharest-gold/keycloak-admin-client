@@ -41,7 +41,7 @@ test('Test getting the list of users for a Realm that doesn\'t exist', (t) => {
     const realmName = 'notarealrealm';
 
     client.users.find(realmName).catch((err) => {
-      t.equal(err, 'Realm not found.', 'Realm not found should be returned if the realm wasn\'t found');
+      t.equal(err.statusCode, 404, 'Realm not found should be returned if the realm wasn\'t found');
       t.end();
     });
   });
@@ -72,7 +72,7 @@ test('Test getting the one user for a Realm - userId doesn\'t exist', (t) => {
     const userId = 'not-an-id';
 
     client.users.find(realmName, {userId: userId}).catch((err) => {
-      t.equal(err, 'User not found', 'A User not found error should be thrown');
+      t.equal(err.statusCode, 404, 'A User not found error should be thrown');
       t.end();
     });
   });
@@ -125,7 +125,7 @@ test('Test update a users info - same username error', (t) => {
     testUser.id = 'f9ea108b-a748-435f-9058-dab46ce59771';
 
     client.users.update(realmName, testUser).catch((err) => {
-      t.equal(err.errorMessage, 'User exists with same username or email', 'Should return an error message');
+      t.equal(err.statusCode, 409, 'Should return an error message');
       t.end();
     });
   });
@@ -148,8 +148,7 @@ test('Test update a users info - update a user that does not exist', (t) => {
     testUser.id = 'f9ea108b-a748-435f-9058-dab46ce5977-not-real';
 
     client.users.update(realmName, testUser).catch((err) => {
-      console.log(err);
-      t.equal(err, 'User not found', 'Should return an error that no user is found');
+      t.equal(err.statusCode, 404, 'Should return an error that no user is found');
       t.end();
     });
   });
@@ -168,6 +167,11 @@ test('Test delete a user', (t) => {
     client.users.remove(realmName, userId).then(() => {
       t.end();
     });
+
+    client.users.find(realmName, {userId: userId}).catch((err) => {
+      t.equal(err.statusCode, 404, 'A User not found error should be thrown');
+      t.end();
+    });
   });
 });
 
@@ -179,7 +183,7 @@ test('Test delete a user that doesn\'t exist', (t) => {
   kca.then((client) => {
     // Call the deleteRealm api to remove this realm
     client.users.remove(realmName, userId).catch((err) => {
-      t.equal(err, 'User not found', 'Should return an error that no user is found');
+      t.equal(err.statusCode, 404, 'Should return an error that no user is found');
       t.end();
     });
   });
