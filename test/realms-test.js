@@ -48,7 +48,7 @@ test('Top-Level Realm Test - wrong realm name should through an error', (t) => {
   kca.then((client) => {
     // Realm takes the Realms name *not* the Realm Id
     client.realms.find('notmaster').catch((err) => {
-      t.equal(err, 'Realm not found.', 'Realm not found should be returned if the realm wasn\'t found');
+      t.equal(err.statusCode, 404, 'Realm not found should be returned if the realm wasn\'t found');
       t.end();
     });
   });
@@ -89,7 +89,7 @@ test('Test create a realm - a not unique name', (t) => {
 
   kca.then((client) => {
     client.realms.create(realmToAdd).catch((err) => {
-      t.equal(err.errorMessage, 'Realm with same name exists', 'Error message should be returned when using a non-unique realm name');
+      t.equal(err.statusCode, 409, 'Error message should be returned when using a non-unique realm name');
       t.end();
     });
   });
@@ -129,7 +129,7 @@ test('Test delete a realm that doesn\'t exist', (t) => {
   kca.then((client) => {
     // Call the realms.remove api to remove this realm
     client.realms.remove(realmToAdd.realm).catch((err) => {
-      t.equal(err, 'Realm not found.', 'Realm not found should be returned if the realm wasn\'t found to delete');
+      t.equal(err.statusCode, 404, 'Realm not found should be returned if the realm wasn\'t found to delete');
       t.end();
     });
   });
