@@ -321,3 +321,47 @@ test("Test getting a client's roles - client id doesn't exist", (t) => {
     return t.shouldFail(client.clients.getRoles(realmName, id), 'Could not find client', 'Should return an error that no user is found');
   });
 });
+
+test("Test getting a client's role", (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    // Use the master realm
+    const realmName = 'master';
+    const id = '379efc29-4b2e-403c-83b6-d9c9af43b24a'; // This is the master-realm client id from /scripts/kc-setup-for-tests.json
+    const roleName = 'manage-identity-providers';
+
+    return client.clients.getRole(realmName, id, roleName).then((role) => {
+      const expectedRole = {
+        id: 'a16e820e-ae47-4ac9-82ba-683c0b866994',
+        name: 'manage-identity-providers',
+        description: `\${role_manage-identity-providers}`,
+        scopeParamRequired: false,
+        composite: false
+      };
+      t.deepEqual(role, expectedRole, 'Should return the manage-identity-providers role');
+    });
+  });
+});
+
+test("Test getting a client's role - client id doesn't exist", (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  const realmName = 'master';
+  const id = 'not-a-real-id';
+  const roleName = 'not-a-real-role-name';
+  return kca.then((client) => {
+    return t.shouldFail(client.clients.getRole(realmName, id, roleName), 'Could not find client', 'Should return an error that no client is found');
+  });
+});
+
+test("Test getting a client's role - role name doesn't exist", (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  const realmName = 'master';
+  const id = '379efc29-4b2e-403c-83b6-d9c9af43b24a'; // This is the master-realm client id from /scripts/kc-setup-for-tests.json
+  const roleName = 'not-a-real-role-name';
+  return kca.then((client) => {
+    return t.shouldFail(client.clients.getRole(realmName, id, roleName), 'Could not find role', 'Should return an error that no role is found');
+  });
+});
