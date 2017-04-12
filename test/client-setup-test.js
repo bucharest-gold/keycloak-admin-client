@@ -1,6 +1,6 @@
 'use strict';
 
-const test = require('tape');
+const test = require('blue-tape');
 const keycloakAdminClient = require('../index');
 
 test('keycloakAdminClient should return a promise containing the client object', (t) => {
@@ -15,10 +15,9 @@ test('keycloakAdminClient should return a promise containing the client object',
   const kca = keycloakAdminClient(settings);
 
   t.equal(kca instanceof Promise, true, 'should return a Promise');
-  kca.then((client) => {
+  return kca.then((client) => {
     t.equal(typeof client.baseUrl, 'string', 'client should contain a baseUrl String');
     t.equal(client.baseUrl, settings.baseUrl, 'client should contain a baseUrl String');
-    t.end();
   });
 });
 
@@ -33,10 +32,9 @@ test('keycloakAdminClient failed login, wrong user creds', (t) => {
 
   const kca = keycloakAdminClient(settings);
 
-  kca.catch((err) => {
+  return kca.then(() => t.fail('should rejected'), (err) => {
     t.equal(err.error_description, 'Invalid user credentials', 'error description should be invalid credentials');
     t.equal(err.error, 'invalid_grant', 'error invalid_grant');
-    t.end();
   });
 });
 
@@ -54,7 +52,5 @@ test('keycloakAdminClient should be able to log in successfully into another rea
   const kca = keycloakAdminClient(settings);
 
   t.equal(kca instanceof Promise, true, 'should return a Promise');
-  kca.then((client) => {
-    t.end();
-  });
+  return kca;
 });
