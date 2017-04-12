@@ -44,6 +44,7 @@
     "request": "^2.69.0"
   },
   "devDependencies": {
+    "blue-tape": "^1.0.0",
     "eslint": "^3.5.0",
     "eslint-config-semistandard": "^7.0.0",
     "eslint-config-standard": "^6.0.0",

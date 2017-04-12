@@ -1,6 +1,6 @@
 'use strict';
 
-const test = require('tape');
+const test = require('blue-tape');
 const keycloakAdminClient = require('../index');
 
 const settings = {
@@ -14,16 +14,15 @@ const settings = {
 test('Test getting the list of Realms', (t) => {
   const kca = keycloakAdminClient(settings);
 
-  kca.then((client) => {
+  return kca.then((client) => {
     t.equal(typeof client.realms.find, 'function', 'The client object returned should have a realms.find function');
 
-    client.realms.find().then((listOfRealms) => {
+    return client.realms.find().then((listOfRealms) => {
       // The listOfRealms should be an Array
       t.equal(listOfRealms instanceof Array, true, 'the list of realms should be an array');
 
       // There should be a master realm and it should be the first in the list.
       t.equal(listOfRealms[0].realm, 'master', 'The realm should be named master');
-      t.end();
     });
   });
 });
@@ -31,13 +30,12 @@ test('Test getting the list of Realms', (t) => {
 test('Top-Level Realm Test - Test getting the just the Master Realm', (t) => {
   const kca = keycloakAdminClient(settings);
 
-  kca.then((client) => {
+  return kca.then((client) => {
     // Realm takes the Realms name *not* the Realm Id
-    client.realms.find('master').then((realm) => {
+    return client.realms.find('master').then((realm) => {
       // The realm reutned should be an object and be the master realm
       t.equal(realm instanceof Object, true, 'the list of realms should be an array');
       t.equal(realm.realm, 'master', 'The realm should be named master');
-      t.end();
     });
   });
 });
@@ -45,12 +43,9 @@ test('Top-Level Realm Test - Test getting the just the Master Realm', (t) => {
 test('Top-Level Realm Test - wrong realm name should through an error', (t) => {
   const kca = keycloakAdminClient(settings);
 
-  kca.then((client) => {
+  return kca.then((client) => {
     // Realm takes the Realms name *not* the Realm Id
-    client.realms.find('notmaster').catch((err) => {
-      t.equal(err, 'Realm not found.', 'Realm not found should be returned if the realm wasn\'t found');
-      t.end();
-    });
+    return t.shouldFail(client.realms.find('notmaster'), 'Realm not found.', 'Realm not found should be returned if the realm wasn\'t found');
   });
 });
 
@@ -62,10 +57,10 @@ test('Test create a realm - just using a realm name', (t) => {
     realm: 'testRealm'
   };
 
-  kca.then((client) => {
+  return kca.then((client) => {
     t.equal(typeof client.realms.create, 'function', 'The client object returned should have a create function');
 
-    client.realms.create(realmToAdd).then((addedRealm) => {
+    return client.realms.create(realmToAdd).then((addedRealm) => {
       // The .realms.create Endpoint does not return anything in the body.
       // But our api "fakes it" by calling the client.realm(realm) function after a succesfull create.
       t.equal(addedRealm.realm, realmToAdd.realm, 'The realm should be named ' + realmToAdd.realm);
@@ -74,7 +69,6 @@ test('Test create a realm - just using a realm name', (t) => {
       // remove is tested later on
       // TODO: find a better way
       client.realms.remove(realmToAdd.realm);
-      t.end();
     });
   });
 });
@@ -87,11 +81,8 @@ test('Test create a realm - a not unique name', (t) => {
     realm: 'master'
   };
 
-  kca.then((client) => {
-    client.realms.create(realmToAdd).catch((err) => {
-      t.equal(err.errorMessage, 'Realm with same name exists', 'Error message should be returned when using a non-unique realm name');
-      t.end();
-    });
+  return kca.then((client) => {
+    return t.shouldFail(client.realms.create(realmToAdd), 'Realm with same name exists', 'Error message should be returned when using a non-unique realm name');
   });
 });
 
@@ -104,16 +95,13 @@ test('Test delete a realm', (t) => {
     realm: 'testRealmForDeleting'
   };
 
-  kca.then((client) => {
-    client.realms.create(realmToAdd).then((addedRealm) => {
+  return kca.then((client) => {
+    return client.realms.create(realmToAdd).then((addedRealm) => {
       // just a quick quick that the realm is there
       t.equal(addedRealm.realm, realmToAdd.realm, 'The realm should be named ' + realmToAdd.realm);
 
       // Call the remove api to remove this realm
-      client.realms.remove(realmToAdd.realm).then(() => {
-        // There is no return value on a delete
-        t.end();
-      });
+      return client.realms.remove(realmToAdd.realm);
     });
   });
 });
@@ -126,12 +114,9 @@ test('Test delete a realm that doesn\'t exist', (t) => {
     realm: 'testRealmThatDoesntExist'
   };
 
-  kca.then((client) => {
+  return kca.then((client) => {
     // Call the realms.remove api to remove this realm
-    client.realms.remove(realmToAdd.realm).catch((err) => {
-      t.equal(err, 'Realm not found.', 'Realm not found should be returned if the realm wasn\'t found to delete');
-      t.end();
-    });
+    return t.shouldFail(client.realms.remove(realmToAdd.realm), 'Realm not found.', 'Realm not found should be returned if the realm wasn\'t found to delete');
   });
 });
 
@@ -144,7 +129,7 @@ test('Test update a realm', (t) => {
     realm: 'testRealmForUpdating'
   };
 
-  kca.then((client) => {
+  return kca.then((client) => {
     client.realms.create(realmToAdd).then((addedRealm) => {
       // just a quick quick that the realm is there
       t.equal(addedRealm.realm, realmToAdd.realm, 'The realm should be named ' + realmToAdd.realm);
@@ -153,7 +138,7 @@ test('Test update a realm', (t) => {
       // Update a property in the realm we just created
       addedRealm.enabled = true;
       // Call the realms.update api to update just the realm
-      client.realms.update(realmToAdd.realm, addedRealm).then(() => {
+      return client.realms.update(realmToAdd.realm, addedRealm).then(() => {
         // There is no return value on an update
         // Get the realm we just updated to test
         return client.realms.find(realmToAdd.realm);
@@ -164,7 +149,6 @@ test('Test update a realm', (t) => {
         // realms.remove is tested later on
         // TODO: find a better way
         client.realms.remove(realmToAdd.realm);
-        t.end();
       });
     });
   });
