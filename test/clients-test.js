@@ -365,3 +365,54 @@ test("Test getting a client's role - role name doesn't exist", (t) => {
     return t.shouldFail(client.clients.getRole(realmName, id, roleName), 'Could not find role', 'Should return an error that no role is found');
   });
 });
+
+test('Test create a client role', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    const realmName = 'master';
+    const id = '294193ca-3506-4fc9-9b33-cc9d25bd0ec7'; // This is the admin-cli client id from /scripts/kc-setup-for-tests.json
+    const newRole = {
+      name: 'my-new-role',
+      description: 'A new role'
+    };
+
+    return client.clients.createRole(realmName, id, newRole).then((addedRole) => {
+      t.equal(addedRole.name, newRole.name, `The name should be named ${newRole.name}`);
+      t.equal(addedRole.description, newRole.description, `The description should be named ${newRole.description}`);
+    });
+  });
+});
+
+test("Test create a client role - client id doesn't exist", (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    const realmName = 'master';
+    const id = 'not-a-real-id';
+    const newRole = {
+      name: 'my-new-role',
+      description: 'A new role'
+    };
+
+    return kca.then((client) => {
+      return t.shouldFail(client.clients.createRole(realmName, id, newRole), 'Could not find client', 'Should return an error that no client is found');
+    });
+  });
+});
+
+test('Test create a client role - a non-unique role name', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    const realmName = 'master';
+    const id = '379efc29-4b2e-403c-83b6-d9c9af43b24a'; // This is the master-realm client id from /scripts/kc-setup-for-tests.json
+    const newRole = {
+      name: 'manage-identity-providers'
+    };
+
+    return kca.then((client) => {
+      return t.shouldFail(client.clients.createRole(realmName, id, newRole), `Role ${newRole.name} already exists`, 'Error message should be returned when using a non-unique role name');
+    });
+  });
+});
