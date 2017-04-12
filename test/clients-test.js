@@ -265,15 +265,14 @@ test("Test delete a client that doesn't exist", (t) => {
 test('Test getting the client secret', (t) => {
   const kca = keycloakAdminClient(settings);
 
-  kca.then((client) => {
+  return kca.then((client) => {
     // Use the master realm
     const realmName = 'master';
     const id = '294193ca-3506-4fc9-9b33-cc9d25bd0ec7'; // This is the admin-cli client id from /scripts/kc-setup-for-tests.json
 
-    client.clients.getClientSecret(realmName, id).then((clientSecret) => {
+    return client.clients.getClientSecret(realmName, id).then((clientSecret) => {
       t.equal(clientSecret.type, 'secret', 'The credentials type should be secret');
       t.equal(clientSecret.value, 'f3d95ebb-42ab-4a15-998f-775a84adbbaf', 'The client-secret returned should be the one we want');
-      t.end();
     });
   });
 });
@@ -281,14 +280,11 @@ test('Test getting the client secret', (t) => {
 test("Test getting the client secret - client id doesn't exist", (t) => {
   const kca = keycloakAdminClient(settings);
 
-  kca.then((client) => {
+  return kca.then((client) => {
     // Use the master realm
     const realmName = 'master';
     const id = 'not-an-id';
 
-    client.clients.getClientSecret(realmName, id).catch((err) => {
-      t.equal(err, 'Could not find client', 'A Client not found error should be thrown');
-      t.end();
-    });
+    return t.shouldFail(client.clients.getClientSecret(realmName, id), 'Could not find client', 'A Client not found error should be thrown');
   });
 });
