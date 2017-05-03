@@ -41,4 +41,7 @@ waitForServer
 
 # We have to restart the server for the admin user to load?
 $KEYCLOAK/bin/jboss-cli.sh --connect command=:reload
+
+sleep 5
+
 waitForServer
