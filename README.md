@@ -54,7 +54,7 @@ adminClient(settings)
 ## Development & Testing
 
 To run the tests, you'll need to have a keycloak server running. No worries!
-This is all taken care of for you. Just run `./build/start-server.sh`.
+This is all taken care of for you. Just run `./scripts/start-server.sh`.
 If you don't already have a server downloaded, this script will download one
 for you, start it, initialize the admin user, and then restart.
 
@@ -64,7 +64,7 @@ Then just run the tests.
 make test
 ```
 
-To stop the server, run `./build/stop-server.sh`.
+To stop the server, run `./scripts/stop-server.sh`.
 
 
 ### Notable Changes from 0.1.0 to 0.2.0
