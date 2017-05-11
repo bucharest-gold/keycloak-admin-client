@@ -63,7 +63,7 @@ test('Test create a realm - just using a realm name', (t) => {
     return client.realms.create(realmToAdd).then((addedRealm) => {
       // The .realms.create Endpoint does not return anything in the body.
       // But our api "fakes it" by calling the client.realm(realm) function after a succesfull create.
-      t.equal(addedRealm.realm, realmToAdd.realm, 'The realm should be named ' + realmToAdd.realm);
+      t.equal(addedRealm.realm, realmToAdd.realm, `The realm should be named ${realmToAdd.realm}`);
 
       // clean up the realm we just added. This is only really needed when running tests locally.
       // remove is tested later on
@@ -98,7 +98,7 @@ test('Test delete a realm', (t) => {
   return kca.then((client) => {
     return client.realms.create(realmToAdd).then((addedRealm) => {
       // just a quick quick that the realm is there
-      t.equal(addedRealm.realm, realmToAdd.realm, 'The realm should be named ' + realmToAdd.realm);
+      t.equal(addedRealm.realm, realmToAdd.realm, `The realm should be named ${realmToAdd.realm}`);
 
       // Call the remove api to remove this realm
       return client.realms.remove(realmToAdd.realm);
@@ -132,7 +132,7 @@ test('Test update a realm', (t) => {
   return kca.then((client) => {
     client.realms.create(realmToAdd).then((addedRealm) => {
       // just a quick quick that the realm is there
-      t.equal(addedRealm.realm, realmToAdd.realm, 'The realm should be named ' + realmToAdd.realm);
+      t.equal(addedRealm.realm, realmToAdd.realm, `The realm should be named ${realmToAdd.realm}`);
       t.equal(addedRealm.enabled, false, 'initial enabled is false');
 
       // Update a property in the realm we just created

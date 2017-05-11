@@ -25,7 +25,7 @@ request.post({url: baseUrl + url, form: config}, function (err, resp, body) {
   };
 
   request({
-    url: baseUrl + '/admin/realms',
+    url: `${baseUrl}/admin/realms`,
     auth: auth
   }, function (err, response, body) {
     if (err) {
@@ -38,7 +38,7 @@ request.post({url: baseUrl + url, form: config}, function (err, resp, body) {
     console.log('Got All Realms', realms);
 
     request({
-      url: baseUrl + '/admin/realms/' + realms[0].realm,
+      url: `${baseUrl}/admin/realms/${realms[0].realm}`,
       auth: auth
     }, function (err, response, body) {
       if (err) {

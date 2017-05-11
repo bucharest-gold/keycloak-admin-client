@@ -2,6 +2,7 @@
 
 const test = require('blue-tape');
 const keycloakAdminClient = require('../index');
+const privates = require('../lib/private-map');
 
 test('keycloakAdminClient should return a promise containing the client object', (t) => {
   const settings = {
@@ -53,4 +54,18 @@ test('keycloakAdminClient should be able to log in successfully into another rea
 
   t.equal(kca instanceof Promise, true, 'should return a Promise');
   return kca;
+});
+
+test('keycloakAdminClient should accept and use a token in lieue of credentials', (t) => {
+  const settings = {
+    baseUrl: 'http://127.0.0.1:8080/auth',
+    accessToken: 'an-access-token'
+  };
+
+  const kca = keycloakAdminClient(settings);
+
+  t.equal(kca instanceof Promise, true, 'should return a Promise');
+  return kca.then((client) => {
+    t.equal(privates.get(client).accessToken, settings.accessToken, 'client should contain a baseUrl String');
+  });
 });
