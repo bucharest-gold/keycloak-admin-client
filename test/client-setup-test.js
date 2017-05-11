@@ -66,6 +66,6 @@ test('keycloakAdminClient should accept and use a token in lieue of credentials'
 
   t.equal(kca instanceof Promise, true, 'should return a Promise');
   return kca.then((client) => {
-    t.equal(privates.get(client).accessToken, settings.accessToken, 'client should contain a baseUrl String');
+    t.equal(privates.get(client).accessToken, settings.accessToken, 'client should have the provided access token');
   });
 });
