@@ -58,6 +58,75 @@ test('Test getting the one user for a Realm', (t) => {
   });
 });
 
+test('Test getting the users role mappins', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    // Use the master realm
+    const realmName = 'master';
+    const userId = 'f9ea108b-a748-435f-9058-dab46ce59771'; // This is the admin user id from /scripts/kc-setup-for-tests.json
+
+    return client.users.roleMappings.find(realmName, userId).then((roleMappings) => {
+      const expectedRoleMappings = {
+        "realmMappings":[{
+            "id":"e2892f14-c143-4b65-a3d3-7014c6270d7b",
+            "name":"offline_access",
+            "description":"${role_offline-access}",
+            "scopeParamRequired":true,
+            "composite":false,
+            "clientRole":false,
+            "containerId":"master"
+         }, {
+            "id":"61677e07-49f8-49c4-9111-2e7300d6bff7",
+            "name":"admin",
+            "description":"${role_admin}",
+            "scopeParamRequired":false,
+            "composite":true,
+            "clientRole":false,
+            "containerId":"master"
+         }],
+        "clientMappings":{
+          "account":{
+            "id":"b4b295f4-39eb-4ba7-b22d-413e3c4418c9",
+            "client":"account",
+            "mappings":[{
+              "id":"fa85b419-9dba-49dd-a2c3-2a6e8e8bbbcb",
+              "name":"view-profile",
+              "description":"${role_view-profile}",
+              "scopeParamRequired":false,
+              "composite":false,
+              "clientRole":true,
+              "containerId":"b4b295f4-39eb-4ba7-b22d-413e3c4418c9"
+            }, {
+              "id":"98b79a8d-e42f-4332-a118-e770af948083",
+              "name":"manage-account",
+              "description":"${role_manage-account}",
+              "scopeParamRequired":false,
+              "composite":false,
+              "clientRole":true,
+              "containerId":"b4b295f4-39eb-4ba7-b22d-413e3c4418c9"
+            }]
+          }
+        }
+      };
+      
+      t.deepEqual(roleMappings, expectedRoleMappings, 'Should return the admin users role mappings');
+    });
+  });
+});
+
+test('Test getting the users role mappins - userId doesn\'t exist', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    // Use the master realm
+    const realmName = 'master';
+    const userId = 'not-an-id'; // This is the admin user id from /scripts/kc-setup-for-tests.json
+
+    return t.shouldFail(client.users.roleMappings.find(realmName, userId), 'User not found', 'A User not found error should be thrown');
+  });
+});
+
 test('Test getting the one user for a Realm - userId doesn\'t exist', (t) => {
   const kca = keycloakAdminClient(settings);
 
