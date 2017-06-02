@@ -17,7 +17,7 @@ An _Extremely Experimental_ client for connecting to the Keycloak Admin REST API
 | Build:          | make |
 | Documentation:  | http://bucharest-gold.github.io/keycloak-admin-client/ |
 | Issue tracker:  | https://github.com/bucharest-gold/keycloak-admin-client/issues |
-| Engines:        | Node.js 4.x, 6.x, 7.x |
+| Engines:        | Node.js 4.x, 6.x, 8.x |
 
 ## Installation
 
@@ -71,7 +71,7 @@ To stop the server, run `./scripts/stop-server.sh`.
 
 ### Notable Changes from 0.1.0 to 0.2.0
 
-The API has been chnaged to logically group up(namespace) functionailty.
+The API has been changed to logically group up(namespace) functionality.
 
 For example,  the 0.1.0 way of getting a list of all realms was by calling the `client.realms` function.
 
