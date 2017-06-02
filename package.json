@@ -9,7 +9,7 @@
     "coverage": "nyc report --reporter=text-lcov > ./coverage/lcov.info",
     "prepublish": "./node_modules/nsp/bin/nsp check",
     "docs": "./node_modules/.bin/jsdoc --verbose -d docs -t ./node_modules/ink-docstrap/template -R README.md index.js ./lib/*.js",
-    "dependencyCheck": "szero . --ci"
+    "dependencyCheck": "szero . --ci --ignore keycloak"
   },
   "keywords": [
     "Keycloak",
