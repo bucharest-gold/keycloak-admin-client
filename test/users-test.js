@@ -4,7 +4,7 @@ const test = require('blue-tape');
 const keycloakAdminClient = require('../index');
 const kcSetupForTests = require('../scripts/kc-setup-for-tests.json');
 
-const sleep = require('./sleep');
+const _ = require('./sleep');
 
 const settings = {
   baseUrl: 'http://127.0.0.1:8080/auth',
@@ -46,7 +46,7 @@ test('Test getting the list of users for a Realm that doesn\'t exist', (t) => {
 });
 
 test('Test getting the one user for a Realm', (t) => {
-  sleep(1000);
+  _.sleep(5000);
   const kca = keycloakAdminClient(settings);
 
   return kca.then((client) => {
