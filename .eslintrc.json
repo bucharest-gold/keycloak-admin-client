@@ -1,7 +1,7 @@
 {
   "extends": "semistandard",
   "rules": {
-    "prefer-const": "error",
+    "prefer-const": "warn",
     "block-scoped-var": "error",
     "prefer-template": "warn",
     "no-use-before-define": [
