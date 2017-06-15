@@ -45,5 +45,3 @@ $KEYCLOAK/bin/jboss-cli.sh --connect command=:reload
 sleep 5
 
 waitForServer
-
-sleep 5
