@@ -197,3 +197,24 @@ test('Test delete a user that doesn\'t exist', (t) => {
     return t.shouldFail(client.users.remove(realmName, userId), 'User not found', 'Should return an error that no user is found');
   });
 });
+
+test('Test listing groups of user', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    t.equal(typeof client.users.groups.find, 'function', 'The client object returned should have a users function');
+
+    // Use the master realm
+    const realmName = 'master';
+    const userId = 'f9ea108b-a748-435f-9058-dab46ce59771';
+
+    return client.users.groups.find(realmName, userId).then((listOfGroups) => {
+      // The listOfGroups should be an Array
+      t.equal(listOfGroups instanceof Array, true, 'the list of groups should be an array');
+
+      // The list of users in the master realm should have 4 people
+      t.equal(listOfGroups.length, 1, 'User should have one group');
+      t.equal(listOfGroups[0].name, 'Test group 1', 'The name of the group should be Test group 1');
+    });
+  });
+});
