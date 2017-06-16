@@ -526,7 +526,17 @@
       } ]
     }
   },
-  "groups" : [ ],
+  "groups" : [{ 
+    "id": "5a54a050-1b9d-4cfa-bf7f-048dd0ba7135",
+    "name": "Test group 1",
+    "path": "/Test group 1",
+    "subGroups": [] 
+  }, { 
+    "id": "5a54a050-1c9d-4cfa-bf7f-048dd0ba7135",
+    "name": "Test group 2",
+    "path": "/Test group 2",
+    "subGroups": [] 
+  }],
   "defaultRoles" : [ "offline_access" ],
   "requiredCredentials" : [ "password" ],
   "otpPolicyType" : "totp",
@@ -556,7 +566,7 @@
     "clientRoles" : {
       "account" : [ "view-profile", "manage-account" ]
     },
-    "groups" : [ ]
+    "groups" : ["Test group 1"]
   }, {
     "id" : "8e7a31bf-58b7-4683-97d3-66a0c1237f57",
     "createdTimestamp" : 1461342397295,
