@@ -1,6 +1,6 @@
 {
   "name": "keycloak-admin-client",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Client for contacting the Keycloak Admin REST API",
   "main": "index.js",
   "scripts": {
