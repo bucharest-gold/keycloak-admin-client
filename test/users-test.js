@@ -227,22 +227,12 @@ test('Test reset password of user', (t) => {
 
     // Use the master realm
     const realmName = 'master';
-    const userId = '677e99fd-b854-479f-afa6-74f295052770';
+    const userId = 'f9ea108b-a748-435f-9058-dab46ce59771';
     const password = 'newPassword';
 
     return client.users.resetPassword(realmName, userId, {
       temporary: true,
       value: password
     });
-  });
-});
-
-test('Test reset password of user that doesn\'t exist', (t) => {
-  const kca = keycloakAdminClient(settings);
-
-  const userId = 'not-a-real-id';
-  const realmName = 'master';
-  return kca.then((client) => {
-    return t.shouldFail(client.users.resetPassword(realmName, userId), 'User not found', 'Should return an error that no user is found');
   });
 });
