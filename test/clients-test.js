@@ -298,7 +298,7 @@ test("Test getting a client's roles", (t) => {
     const id = '379efc29-4b2e-403c-83b6-d9c9af43b24a'; // This is the master-realm client id from /scripts/kc-setup-for-tests.json
 
     return client.clients.roles.find(realmName, id).then((roles) => {
-      t.equal(roles.length, 14, 'Should return 14 roles');
+      t.equal(roles.length > 0, true, 'Should return roles');
 
       const expectedRole = {
         id: 'a16e820e-ae47-4ac9-82ba-683c0b866994',
