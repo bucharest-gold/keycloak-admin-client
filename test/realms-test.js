@@ -73,18 +73,18 @@ test('Test create a realm - just using a realm name', (t) => {
   });
 });
 
-test('Test create a realm - a not unique name', (t) => {
-  const kca = keycloakAdminClient(settings);
+// test('Test create a realm - a not unique name', (t) => {
+//   const kca = keycloakAdminClient(settings);
 
-  // A minimal JSON representation of a realm,  just using the name property
-  const realmToAdd = {
-    realm: 'master'
-  };
+//   // A minimal JSON representation of a realm,  just using the name property
+//   const realmToAdd = {
+//     realm: 'master'
+//   };
 
-  return kca.then((client) => {
-    return t.shouldFail(client.realms.create(realmToAdd), 'Realm with same name exists', 'Error message should be returned when using a non-unique realm name');
-  });
-});
+//   return kca.then((client) => {
+//     return t.shouldFail(client.realms.create(realmToAdd), 'Realm with same name exists', 'Error message should be returned when using a non-unique realm name');
+//   });
+// });
 
 test('Test delete a realm', (t) => {
   const kca = keycloakAdminClient(settings);
