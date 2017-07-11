@@ -11,43 +11,43 @@ const settings = {
   client_id: 'admin-cli'
 };
 
-// test('Test getting the list of Realms', (t) => {
-//   const kca = keycloakAdminClient(settings);
+test('Test getting the list of Realms', (t) => {
+  const kca = keycloakAdminClient(settings);
 
-//   return kca.then((client) => {
-//     t.equal(typeof client.realms.find, 'function', 'The client object returned should have a realms.find function');
+  return kca.then((client) => {
+    t.equal(typeof client.realms.find, 'function', 'The client object returned should have a realms.find function');
 
-//     return client.realms.find().then((listOfRealms) => {
-//       // The listOfRealms should be an Array
-//       t.equal(listOfRealms instanceof Array, true, 'the list of realms should be an array');
+    return client.realms.find().then((listOfRealms) => {
+      // The listOfRealms should be an Array
+      t.equal(listOfRealms instanceof Array, true, 'the list of realms should be an array');
 
-//       // There should be a master realm and it should be the first in the list.
-//       t.equal(listOfRealms[0].realm, 'master', 'The realm should be named master');
-//     });
-//   });
-// });
+      // There should be a master realm and it should be the first in the list.
+      t.equal(listOfRealms[0].realm, 'master', 'The realm should be named master');
+    });
+  });
+});
 
-// test('Top-Level Realm Test - Test getting the just the Master Realm', (t) => {
-//   const kca = keycloakAdminClient(settings);
+test('Top-Level Realm Test - Test getting the just the Master Realm', (t) => {
+  const kca = keycloakAdminClient(settings);
 
-//   return kca.then((client) => {
-//     // Realm takes the Realms name *not* the Realm Id
-//     return client.realms.find('master').then((realm) => {
-//       // The realm reutned should be an object and be the master realm
-//       t.equal(realm instanceof Object, true, 'the list of realms should be an array');
-//       t.equal(realm.realm, 'master', 'The realm should be named master');
-//     });
-//   });
-// });
+  return kca.then((client) => {
+    // Realm takes the Realms name *not* the Realm Id
+    return client.realms.find('master').then((realm) => {
+      // The realm reutned should be an object and be the master realm
+      t.equal(realm instanceof Object, true, 'the list of realms should be an array');
+      t.equal(realm.realm, 'master', 'The realm should be named master');
+    });
+  });
+});
 
-// test('Top-Level Realm Test - wrong realm name should through an error', (t) => {
-//   const kca = keycloakAdminClient(settings);
+test('Top-Level Realm Test - wrong realm name should through an error', (t) => {
+  const kca = keycloakAdminClient(settings);
 
-//   return kca.then((client) => {
-//     // Realm takes the Realms name *not* the Realm Id
-//     return t.shouldFail(client.realms.find('notmaster'), 'Realm not found.', 'Realm not found should be returned if the realm wasn\'t found');
-//   });
-// });
+  return kca.then((client) => {
+    // Realm takes the Realms name *not* the Realm Id
+    return t.shouldFail(client.realms.find('notmaster'), 'Realm not found.', 'Realm not found should be returned if the realm wasn\'t found');
+  });
+});
 
 // test('Test create a realm - just using a realm name', (t) => {
 //   const kca = keycloakAdminClient(settings);

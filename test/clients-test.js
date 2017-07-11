@@ -431,7 +431,7 @@ test('Test retrive an installation from existing client', (t) => {
     };
 
     return client.clients.find(realmName, options).then((listOfClients) => {
-      client.clients.installation(realmName, listOfClients[0].id)
+      return client.clients.installation(realmName, listOfClients[0].id)
         .then((installation) => {
           return t.equal(installation.resource, listOfClients[0].clientId, `The resource should be named ${listOfClients[0].clientId}`);
         });
@@ -461,7 +461,7 @@ test('Test retrive an installation from a realm that does not exist', (t) => {
     };
 
     return client.clients.find(realmName, options).then((listOfClients) => {
-      t.shouldFail(client.clients.installation('wrong-realm', listOfClients[0].id), 'Could not find client', 'Should return an error that no client is found');
+      return t.shouldFail(client.clients.installation('wrong-realm', listOfClients[0].id), 'Could not find client', 'Should return an error that no client is found');
     });
   });
 });
