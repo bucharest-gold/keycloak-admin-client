@@ -49,29 +49,29 @@ test('Top-Level Realm Test - wrong realm name should through an error', (t) => {
   });
 });
 
-// test('Test create a realm - just using a realm name', (t) => {
-//   const kca = keycloakAdminClient(settings);
+test('Test create a realm - just using a realm name', (t) => {
+  const kca = keycloakAdminClient(settings);
 
-//   // A minimal JSON representation of a realm,  just using the name property
-//   const realmToAdd = {
-//     realm: 'testRealm'
-//   };
+  // A minimal JSON representation of a realm,  just using the name property
+  const realmToAdd = {
+    realm: 'testRealm'
+  };
 
-//   return kca.then((client) => {
-//     t.equal(typeof client.realms.create, 'function', 'The client object returned should have a create function');
+  return kca.then((client) => {
+    t.equal(typeof client.realms.create, 'function', 'The client object returned should have a create function');
 
-//     return client.realms.create(realmToAdd).then((addedRealm) => {
-//       // The .realms.create Endpoint does not return anything in the body.
-//       // But our api "fakes it" by calling the client.realm(realm) function after a succesfull create.
-//       t.equal(addedRealm.realm, realmToAdd.realm, `The realm should be named ${realmToAdd.realm}`);
+    return client.realms.create(realmToAdd).then((addedRealm) => {
+      // The .realms.create Endpoint does not return anything in the body.
+      // But our api "fakes it" by calling the client.realm(realm) function after a succesfull create.
+      t.equal(addedRealm.realm, realmToAdd.realm, `The realm should be named ${realmToAdd.realm}`);
 
-//       // clean up the realm we just added. This is only really needed when running tests locally.
-//       // remove is tested later on
-//       // TODO: find a better way
-//       client.realms.remove(realmToAdd.realm);
-//     });
-//   });
-// });
+      // clean up the realm we just added. This is only really needed when running tests locally.
+      // remove is tested later on
+      // TODO: find a better way
+      client.realms.remove(realmToAdd.realm);
+    });
+  });
+});
 
 test('Test create a realm - a not unique name', (t) => {
   const kca = keycloakAdminClient(settings);
