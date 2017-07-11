@@ -130,7 +130,7 @@ test('Test update a realm', (t) => {
   };
 
   return kca.then((client) => {
-    client.realms.create(realmToAdd).then((addedRealm) => {
+    return client.realms.create(realmToAdd).then((addedRealm) => {
       // just a quick quick that the realm is there
       t.equal(addedRealm.realm, realmToAdd.realm, `The realm should be named ${realmToAdd.realm}`);
       t.equal(addedRealm.enabled, false, 'initial enabled is false');
@@ -148,7 +148,7 @@ test('Test update a realm', (t) => {
         // clean up the realm we just added. This is only really needed when running tests locally.
         // realms.remove is tested later on
         // TODO: find a better way
-        client.realms.remove(realmToAdd.realm);
+        return client.realms.remove(realmToAdd.realm);
       });
     });
   });
