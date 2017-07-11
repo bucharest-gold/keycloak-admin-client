@@ -86,25 +86,25 @@ test('Test create a realm - a not unique name', (t) => {
   });
 });
 
-// test('Test delete a realm', (t) => {
-//   const kca = keycloakAdminClient(settings);
+test('Test delete a realm', (t) => {
+  const kca = keycloakAdminClient(settings);
 
-//   // First we need to create a realm to delete
-//   // A minimal JSON representation of a realm,  just using the name property
-//   const realmToAdd = {
-//     realm: 'testRealmForDeleting'
-//   };
+  // First we need to create a realm to delete
+  // A minimal JSON representation of a realm,  just using the name property
+  const realmToAdd = {
+    realm: 'testRealmForDeleting'
+  };
 
-//   return kca.then((client) => {
-//     return client.realms.create(realmToAdd).then((addedRealm) => {
-//       // just a quick quick that the realm is there
-//       t.equal(addedRealm.realm, realmToAdd.realm, `The realm should be named ${realmToAdd.realm}`);
+  return kca.then((client) => {
+    return client.realms.create(realmToAdd).then((addedRealm) => {
+      // just a quick quick that the realm is there
+      t.equal(addedRealm.realm, realmToAdd.realm, `The realm should be named ${realmToAdd.realm}`);
 
-//       // Call the remove api to remove this realm
-//       return client.realms.remove(realmToAdd.realm);
-//     });
-//   });
-// });
+      // Call the remove api to remove this realm
+      return client.realms.remove(realmToAdd.realm);
+    });
+  });
+});
 
 // test('Test delete a realm that doesn\'t exist', (t) => {
 //   const kca = keycloakAdminClient(settings);
