@@ -9,13 +9,13 @@
 
 [![NPM](https://nodei.co/npm/keycloak-admin-client.png)](https://npmjs.org/package/keycloak-admin-client)
 
-An _Extremely Experimental_ client for connecting to the Keycloak Admin REST API - http://keycloak.github.io/docs/rest-api/index.html
+An _Extremely Experimental_ client for connecting to the Keycloak Admin REST API - http://www.keycloak.org/docs-api/3.2/rest-api/index.html
 
 |                 | Project Info  |
 | --------------- | ------------- |
 | License:        | Apache-2.0 |
 | Build:          | make |
-| Documentation:  | http://bucharest-gold.github.io/keycloak-admin-client/ |
+| Documentation:  | http://www.keycloak.org/keycloak-admin-client/index.html |
 | Issue tracker:  | https://github.com/bucharest-gold/keycloak-admin-client/issues |
 | Engines:        | Node.js 4.x, 6.x, 8.x |
 
