@@ -298,3 +298,22 @@ test('Test reset password of user', (t) => {
     });
   });
 });
+
+test('Test getting the number of users in a Realm', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    t.equal(typeof client.users.count, 'function', 'The client object returned should have a users function');
+
+    // Use the master realm
+    const realmName = 'master';
+
+    return client.users.count(realmName).then((numberOfUsers) => {
+      // The numberOfUsers should be an Integer
+      t.equal(Number.isInteger(numberOfUsers), true, 'the number of users should be an integer');
+
+      // The number of users in the master realm should be 4
+      t.equal(numberOfUsers, 4, 'There should be 4 users in master');
+    });
+  });
+});
