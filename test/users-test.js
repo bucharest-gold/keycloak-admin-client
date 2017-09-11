@@ -281,6 +281,33 @@ test("Test client's role user unassignment", (t) => {
   });
 });
 
+test('Test create a users', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    t.equal(typeof client.users.create, 'function', 'The client object returned should have a create function');
+    // Use the master realm
+    const realmName = 'master';
+
+    const testUser = {
+      username: 'a@nothing.dev',
+      firstName: 'The first name',
+      lastName: 'The last name',
+      email: 'a@nothing.dev'
+    };
+
+    // Create the user
+    return client.users.create(realmName, testUser).then((user) => {
+      // It will return the newly created user
+      t.notEqual(user.id, null, 'The id must be set on the created user');
+      t.equal(user.username, testUser.username, 'The username returned should be "a@nothing.dev"');
+      t.equal(user.firstName, testUser.firstName, 'The firstName returned should be "The first name"');
+      t.equal(user.lastName, testUser.lastName, 'The lastName returned should be "The last name"');
+      t.equal(user.email, testUser.email, 'The email returned should be "a@nothing.dev"');
+    });
+  });
+});
+
 test('Test reset password of user', (t) => {
   const kca = keycloakAdminClient(settings);
 
