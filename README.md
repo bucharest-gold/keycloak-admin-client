@@ -88,3 +88,8 @@ The current RFC is located here: https://github.com/bucharest-gold/entente/blob/
 ## Contributing
 
 Please read the [contributing guide](./CONTRIBUTING.md)
+
+## Reporting security vulnerabilities
+
+If you've found a security vulnerability, please look at the [instructions on how to properly report it](http://www.keycloak.org/security.html)
+
