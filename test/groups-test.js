@@ -59,3 +59,39 @@ test('Test getting the list of group members from Test group 1 for a Realm', (t)
     });
   });
 });
+
+test('Test getting the one group for a Realm', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    // Use the master realm
+    const realmName = 'master';
+    const id = '5a54a050-1b9d-4cfa-bf7f-048dd0ba7135'; // This is the test group id from /scripts/kc-setup-for-tests.json
+
+    return client.groups.find(realmName, {id}).then((group) => {
+      t.equal(group.id, id, 'The group id we used and the one returned should be the same');
+    });
+  });
+});
+
+test('Test create a Group', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    t.equal(typeof client.groups.create, 'function', 'The client object returned should have a create function');
+
+    // Use the master realm
+    const realmName = 'master';
+    const newGroup = {
+      name: 'group-test'
+    };
+
+    return client.groups.create(realmName, newGroup)
+      .then(group => {
+        t.equal(group.name, newGroup.name, 'The group name we used and the one returned should be the same');
+      })
+      .catch((err) => {
+        t.equal(err.errorMessage, 'Client group-test already exists', 'Error message should be returned when using a non-unique name');
+      });
+  });
+});
