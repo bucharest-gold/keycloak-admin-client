@@ -25,8 +25,8 @@ test('Test getting the list of clients for a Realm', (t) => {
       // The listOfCients should be an Array
       t.equal(listOfClients instanceof Array, true, 'the list of client should be an array');
 
-      // The list of client in the master realm should have 4 people
-      t.equal(listOfClients.length, 10, 'There should be 4 client in master');
+      // The list of client in the master realm should have 11 people
+      t.equal(listOfClients.length, 11, 'There should be 11 client in master');
     });
   });
 });
@@ -298,7 +298,7 @@ test("Test getting a client's roles", (t) => {
     const id = '379efc29-4b2e-403c-83b6-d9c9af43b24a'; // This is the master-realm client id from /scripts/kc-setup-for-tests.json
 
     return client.clients.roles.find(realmName, id).then((roles) => {
-      t.equal(roles.length, 14, 'Should return 14 roles');
+      t.equal(roles.length, 18, 'Should return 18 roles');
 
       const expectedRole = {
         id: 'a16e820e-ae47-4ac9-82ba-683c0b866994',
@@ -462,6 +462,124 @@ test('Test retrive an installation from a realm that does not exist', (t) => {
 
     return client.clients.find(realmName, options).then((listOfClients) => {
       t.shouldFail(client.clients.installation('wrong-realm', listOfClients[0].id), 'Could not find client', 'Should return an error that no client is found');
+    });
+  });
+});
+
+test('Test create a authorization resource', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    const realmName = 'master';
+    const id = 'e66bbf52-8f61-485d-ad5c-fcbe630fb9a2'; // This is the resource-test-client client id from /scripts/kc-setup-for-tests.json
+    const newResource = {
+      name: 'test:2',
+      scopes: []
+    };
+
+    return client.clients.authorizations.resources.create(realmName, id, newResource).then((addedResource) => {
+      t.equal(addedResource.name, newResource.name, `Created resource should be named ${newResource.name}`);
+
+      // Remove created resource
+      return client.clients.authorizations.resources.remove(realmName, id, addedResource._id);
+    });
+  });
+});
+
+test('Test create a authorization resource with non-unique resource name', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    const realmName = 'master';
+    const id = 'e66bbf52-8f61-485d-ad5c-fcbe630fb9a2'; // This is the resource-test-client client id from /scripts/kc-setup-for-tests.json
+    const newResource = {
+      name: 'test:1',
+      scopes: []
+    };
+
+    return t.shouldFail(client.clients.authorizations.resources.create(realmName, id, newResource), `Resource with name [${newResource.name}] already exists.`, 'Error message should be returned when using a non-unique resource name');
+  });
+});
+
+test('Test remove a authorization resource', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    const realmName = 'master';
+    const id = 'e66bbf52-8f61-485d-ad5c-fcbe630fb9a2'; // This is the resource-test-client client id from /scripts/kc-setup-for-tests.json
+    const resourceToRemove = {
+      name: 'test:2',
+      scopes: []
+    };
+
+    return client.clients.authorizations.resources.create(realmName, id, resourceToRemove).then((addedResource) => {
+      return client.clients.authorizations.resources.find(realmName, id).then((listOfResources) => {
+        t.equal(listOfResources.length, 3, 'Confirm that new resource has been created so there are 3 resources');
+        t.equal(listOfResources[2].name, addedResource.name, `Confirm that resource with name ${addedResource.name} has been created`);
+        return client.clients.authorizations.resources.remove(realmName, id, addedResource._id).then(() => {
+          return client.clients.authorizations.resources.find(realmName, id).then((newListOfResources) => {
+            t.equal(newListOfResources.length, 2, 'Confirm that resource has been removed and 2 resources are left');
+            t.notEqual(newListOfResources[0].name, addedResource.name, 'Confirm that first resource is not the removed one');
+            t.notEqual(newListOfResources[1].name, addedResource.name, 'Confirm that second resource is not the removed one');
+          });
+        });
+      });
+    });
+  });
+});
+
+test('Test update a authorization resource', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    const realmName = 'master';
+    const id = 'e66bbf52-8f61-485d-ad5c-fcbe630fb9a2'; // This is the resource-test-client client id from /scripts/kc-setup-for-tests.json
+    const resourceToUpdate = {
+      name: 'test:2',
+      scopes: []
+    };
+
+    return client.clients.authorizations.resources.create(realmName, id, resourceToUpdate).then((addedResource) => {
+      t.equal(resourceToUpdate.name, addedResource.name, `Confirm that resource with name ${resourceToUpdate.name} has been created`);
+      addedResource.name = 'test:2:updated';
+      return client.clients.authorizations.resources.update(realmName, id, addedResource).then((updatedResource) => {
+        t.equal(updatedResource.name, 'test:2:updated', 'Confirm that resource has been renamed to test:2:updated');
+
+        // remove created resource after test
+        return client.clients.authorizations.resources.remove(realmName, id, updatedResource._id);
+      });
+    });
+  });
+});
+
+test('Test list authorization resources', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    const realmName = 'master';
+    const id = 'e66bbf52-8f61-485d-ad5c-fcbe630fb9a2'; // This is the resource-test-client client id from /scripts/kc-setup-for-tests.json
+
+    return client.clients.authorizations.resources.find(realmName, id).then((listOfResources) => {
+      t.equal(listOfResources instanceof Array, true, 'the list of resources should be an array');
+      t.equal(listOfResources[0].name, 'Default Resource', 'The first resource should be named Default Resource');
+      t.equal(listOfResources[1].name, 'test:1', 'The second resource should be named test:1');
+    });
+  });
+});
+
+test('Test find authorization resource', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    const realmName = 'master';
+    const id = 'e66bbf52-8f61-485d-ad5c-fcbe630fb9a2'; // This is the resource-test-client client id from /scripts/kc-setup-for-tests.json
+
+    return client.clients.authorizations.resources.find(realmName, id).then((listOfResources) => {
+      const testResource = listOfResources[1];
+      return client.clients.authorizations.resources.find(realmName, id, testResource._id).then((foundResource) => {
+        t.equal(foundResource instanceof Array, false, 'finding resource with id should not return array');
+        t.equal(foundResource.name, 'test:1', 'The resource should be named test:1');
+      });
     });
   });
 });

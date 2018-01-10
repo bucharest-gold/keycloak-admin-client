@@ -304,24 +304,9 @@ test('Test create a users', (t) => {
       t.equal(user.firstName, testUser.firstName, 'The firstName returned should be "The first name"');
       t.equal(user.lastName, testUser.lastName, 'The lastName returned should be "The last name"');
       t.equal(user.email, testUser.email, 'The email returned should be "a@nothing.dev"');
-    });
-  });
-});
 
-test('Test reset password of user', (t) => {
-  const kca = keycloakAdminClient(settings);
-
-  return kca.then((client) => {
-    t.equal(typeof client.users.resetPassword, 'function', 'The client object returned should have a resetPassword function');
-
-    // Use the master realm
-    const realmName = 'master';
-    const userId = 'f9ea108b-a748-435f-9058-dab46ce59771';
-    const password = 'newPassword';
-
-    return client.users.resetPassword(realmName, userId, {
-      temporary: true,
-      value: password
+      // Remove the created user
+      return client.users.remove(realmName, user.id);
     });
   });
 });
@@ -341,6 +326,24 @@ test('Test getting the number of users in a Realm', (t) => {
 
       // The number of users in the master realm should be 4
       t.equal(numberOfUsers, 4, 'There should be 4 users in master');
+    });
+  });
+});
+
+test('Test reset password of user', (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    t.equal(typeof client.users.resetPassword, 'function', 'The client object returned should have a resetPassword function');
+
+    // Use the master realm
+    const realmName = 'master';
+    const userId = 'f9ea108b-a748-435f-9058-dab46ce59771';
+    const password = 'newPassword';
+
+    return client.users.resetPassword(realmName, userId, {
+      temporary: true,
+      value: password
     });
   });
 });

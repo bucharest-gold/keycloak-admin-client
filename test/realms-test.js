@@ -21,8 +21,8 @@ test('Test getting the list of Realms', (t) => {
       // The listOfRealms should be an Array
       t.equal(listOfRealms instanceof Array, true, 'the list of realms should be an array');
 
-      // There should be a master realm and it should be the first in the list.
-      t.equal(listOfRealms[0].realm, 'master', 'The realm should be named master');
+      // There should be a Delete Test Realm realm and it should be the first in the list. Since realms are ordered alphabetically
+      t.equal(listOfRealms[0].realm, 'Delete Test Realm', 'The realm should be named Delete Test Realm');
     });
   });
 });
