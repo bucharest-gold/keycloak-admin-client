@@ -268,3 +268,32 @@ test("Test create a realm's role - a non-unique role name", (t) => {
     });
   });
 });
+
+test("Test getting realm's keys", (t) => {
+  const kca = keycloakAdminClient(settings);
+
+  return kca.then((client) => {
+    // Use the master realm
+    const realmName = 'master';
+
+    return client.realms.keys(realmName).then((keys) => {
+      t.equal(keys.keys.length, 3, 'Should return 3 keys');
+
+      const expectedKey = {
+        type: 'RSA',
+        providerPriority: 100,
+        kid: 'M8_xzTOuiN3f8tQeYw6kWu08ZHFuQoS6PnZ6_LI9aVQ',
+        status: 'ACTIVE',
+        publicKey: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgdNwWrLpEsG0ruu4pkjPpTFroWFcJnOwj3KyJtkyASlTZd/ymxmyPhiNykq24/D3ZtxeRo7DKwjofgDGw4n57TJ5EdSnl6b2JwmS8J1ckWfzlojulifbTy4mmeTRJWLp2P/6Dm4h7y7v4M4nceGTYdnaAfHmPe1DjGYYVijFlZGBHAlSVvsMcP80Oub42ZymtDsVYCKMjzKVTvRsAQs0RgC6u35iLefPFrQOxtmVRz9PrgEqXR1G6wf96PAEGIBgJpr0PJ9Hvl5w5N93aCkSxF3KzUf5TvKcgv/JSXUqr92ivKwoi7N7iDq1QBgtQHRBEcnIyrpbAMUPWoVfXYBfxQIDAQAB',
+        certificate: 'MIICmzCCAYMCBgFUNHS92TANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMTYwNDIwMTYxNDA2WhcNMjYwNDIwMTYxNTQ2WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCB03BasukSwbSu67imSM+lMWuhYVwmc7CPcrIm2TIBKVNl3/KbGbI+GI3KSrbj8Pdm3F5GjsMrCOh+AMbDifntMnkR1KeXpvYnCZLwnVyRZ/OWiO6WJ9tPLiaZ5NElYunY//oObiHvLu/gzidx4ZNh2doB8eY97UOMZhhWKMWVkYEcCVJW+wxw/zQ65vjZnKa0OxVgIoyPMpVO9GwBCzRGALq7fmIt588WtA7G2ZVHP0+uASpdHUbrB/3o8AQYgGAmmvQ8n0e+XnDk33doKRLEXcrNR/lO8pyC/8lJdSqv3aK8rCiLs3uIOrVAGC1AdEERycjKulsAxQ9ahV9dgF/FAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAF7mvSHD+ByTxR48xMA/MR0wCyfKxwSPlM5yZ37uIRB16a5ohkFVOkzMF3OsG2Wwo6+LlvoR8mVavvj0b2QC5ihWiNH9dhtsmaVy6i75zxFre7+Vdw30NzZb7LxaTDRfe7sQHKh3jXGzhN0XIIyw1CtYr9/v+u2dHDHz03oExXGcS2gH6Oo3dScO2LXxaQQTM4RwGZLp0up0eS9/OblMM87kswpd0Vl7+83hJJfvPK0WGAci5qxMvSUNtqbpsqKzhHZF3vm0CXojiM/9Mb5HfN8vzQjyu3cnUdgmRvU9tbV9xCeLDj9JhjdabY/zLWyLJp6x1KqWeaKM8me02bpcty4='
+      };
+
+      const rsaFoundKey = keys.keys.find((r) => r.type === 'RSA');
+      if (rsaFoundKey) {
+        // The providerId will be different, so we use the rsaFoundKey.providerId to use deepEqual after
+        expectedKey.providerId = rsaFoundKey.providerId;
+      }
+      t.deepEqual(rsaFoundKey, expectedKey, 'Should have the RSA key');
+    });
+  });
+});
