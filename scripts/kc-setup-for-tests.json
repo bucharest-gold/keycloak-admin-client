@@ -1694,6 +1694,34 @@
   "enabledEventTypes" : [ ],
   "adminEventsEnabled" : false,
   "adminEventsDetailsEnabled" : false,
+  "identityProviders": [
+    {
+      "alias": "test-oidc",
+      "displayName": "Test Provider",
+      "internalId": "69fec1fc-0479-4dc8-9dea-b6aae98d4aaf",
+      "providerId": "keycloak-oidc",
+      "enabled": true,
+      "updateProfileFirstLoginMode": "on",
+      "trustEmail": false,
+      "storeToken": false,
+      "addReadTokenRoleOnCreate": false,
+      "authenticateByDefault": false,
+      "linkOnly": false,
+      "firstBrokerLoginFlowAlias": "first broker login",
+      "config": {
+        "hideOnLoginPage": "",
+        "loginHint": "",
+        "validateSignature": "",
+        "clientId": "test-id",
+        "tokenUrl": "https://localhost/token",
+        "authorizationUrl": "https://localhost/auth",
+        "disableUserInfo": "",
+        "clientSecret": "**********",
+        "backchannelSupported": "",
+        "useJwksUrl": "true"
+      }
+    }
+  ],
   "internationalizationEnabled" : false,
   "supportedLocales" : [ ],
   "authenticationFlows" : [ {
