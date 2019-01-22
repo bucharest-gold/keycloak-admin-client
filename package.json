@@ -35,9 +35,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "bucharest-gold/keycloak-admin-client"
+    "url": "keycloak/keycloak-admin-client"
   },
-  "bugs": "https://github.com/bucharest-gold/keycloak-admin-client/issues",
+  "bugs": "https://github.com/keycloak/keycloak-admin-client/issues",
   "license": "Apache-2.0",
   "dependencies": {
     "keycloak-request-token": "^0.1.0",

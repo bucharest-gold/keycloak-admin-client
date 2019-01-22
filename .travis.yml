@@ -12,8 +12,6 @@ script:
   - make ci
 after_script:
   - ./scripts/stop-server.sh
-notifications:
-  irc: "irc.freenode.org#bucharest-gold"
 branches:
   only:
     - master

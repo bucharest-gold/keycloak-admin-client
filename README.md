@@ -1,23 +1,6 @@
 ### Keycloak Admin Client
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/bucharest-gold/keycloak-admin-client.svg)](https://greenkeeper.io/)
-
-[![Coverage Status](https://coveralls.io/repos/github/bucharest-gold/keycloak-admin-client/badge.svg)](https://coveralls.io/github/bucharest-gold/keycloak-admin-client)
-[![Build Status](https://travis-ci.org/bucharest-gold/keycloak-admin-client.svg?branch=master)](https://travis-ci.org/bucharest-gold/keycloak-admin-client)
-[![Known Vulnerabilities](https://snyk.io/test/npm/keycloak-admin-client/badge.svg)](https://snyk.io/test/npm/keycloak-admin-client)
-[![dependencies Status](https://david-dm.org/bucharest-gold/keycloak-admin-client/status.svg)](https://david-dm.org/bucharest-gold/keycloak-admin-client)
-
-[![NPM](https://nodei.co/npm/keycloak-admin-client.png)](https://npmjs.org/package/keycloak-admin-client)
-
-An _Extremely Experimental_ client for connecting to the Keycloak Admin REST API - http://www.keycloak.org/docs-api/3.2/rest-api/index.html
-
-|                 | Project Info  |
-| --------------- | ------------- |
-| License:        | Apache-2.0 |
-| Build:          | make |
-| Documentation:  | http://www.keycloak.org/keycloak-admin-client/index.html |
-| Issue tracker:  | https://github.com/keycloak/keycloak-admin-client/issues |
-| Engines:        | Node.js 4.x, 6.x, 8.x |
+An client for connecting to the Keycloak Admin REST API - http://www.keycloak.org/docs-api/3.2/rest-api/index.html
 
 ## Installation
 
@@ -30,9 +13,9 @@ npm install keycloak-admin-client -S
 ```js
 'use strict';
 
-let adminClient = require('./');
+const adminClient = require('./');
 
-let settings = {
+const settings = {
   baseUrl: 'http://127.0.0.1:8080/auth',
   username: 'admin',
   password: 'admin',
@@ -80,10 +63,6 @@ Now in 0.2.0, you would do something like this: `client.realms.find`
 `find` can also be used to get 1 realm by passing in the realmName: `client.realms.find('master')`
 
 The other methods have been renamed too, for example, instead of calling `client.updateRealm` you would now call `client.realms.update`
-
-### Other
-
-The current RFC is located here: https://github.com/bucharest-gold/entente/blob/master/rfcs/keycloak-admin-rest-api-node-client.md
 
 ## Contributing
 
